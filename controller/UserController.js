@@ -35,13 +35,12 @@ const userController = {
             }
         },
         async login(req,res,next){
-            console.log("hells")
             const {email,password} = req.body;
             try{
                 // console.log(password);
                 //find the existing user
                 const userDetails = await usermodel.findOne({email:email});
-                if(!existinguser){
+                if(!userDetails){
                     return res.status(404).json({message:"User not found"});
                 }
                 //compare the encrypted password with the requested password
@@ -58,7 +57,7 @@ const userController = {
             }
             catch(err){
                 console.log(err);
-                next(new CustomError(err.message, 500, "Unable to Signup"));
+                next(new CustomError(err.message, 500, "Unable to Login"));
             }
         }
 }
