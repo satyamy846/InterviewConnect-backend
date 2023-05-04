@@ -11,10 +11,16 @@ const feedbackRotuer = require('./routes/feedbackRotuer');
 const adminRouter  = require('./routes/adminRouter');
 const cors = require('cors');
 require("dotenv").config();
+
+//middlewares
 app.use(bodyParser.urlencoded({extended:false}));
+app.use(bodyParser.json())
+app.use(express.json());
+
 
 app.use(cors({origin:"*"}));
-app.use(express.json());
+
+//Routes we are using
 app.use(userRouter);
 app.use(feedbackRouter);
 app.use(catagoryRouter);
@@ -25,6 +31,7 @@ app.use(adminRouter);
 
 
 const port = process.env.PORT || 5000;
+//connecting to database
 connection();
 
 app.get('/',(req,res)=>{
