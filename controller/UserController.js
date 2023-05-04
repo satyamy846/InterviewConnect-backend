@@ -40,7 +40,7 @@ const userController = {
                 //find the existing user
                 const userDetails = await usermodel.findOne({email:email});
                 //compare the encrypted password with the requested password
-                const matchedpassword = bcrypt.compare(password,userDetails.password);
+                const matchedpassword = await bcrypt.compare(password,userDetails.password);
                 //invalid credential
                 if(userDetails.email != email && !matchedpassword){
                     res.status(400).json({message:`User not found please login first`}).send("User not found");
