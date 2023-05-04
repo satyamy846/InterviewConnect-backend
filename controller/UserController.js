@@ -40,6 +40,7 @@ const userController = {
                 // console.log(password);
                 //find the existing user
                 const userDetails = await usermodel.findOne({email:email});
+                console.log(userDetails);
                 if(!userDetails){
                     return res.status(404).json({message:"User not found"});
                 }
@@ -47,16 +48,18 @@ const userController = {
                 const matchedpassword = await bcrypt.compare(password,userDetails.password);
                 // console.log("sahja = " + matchedpassword);
                 //invalid credential
-                if(userDetails.email != email && !matchedpassword){
+                
+                if(!matchedpassword){
+                    // console.log("sha = " + matchedpassword)
                     return res.status(400).json({message:`User not found please login first`}).send("User not found");
                 }
-                    const token = jwt.sign({email:userDetails.email,id:req._id},process.env.SECRET_KEY,{expiresIn:'1h'});
+                    const token = jwt.sign({email:userDetails.email, id:req._id},process.env.SECRET_KEY,{expiresIn:'1h'});
 
                     res.status(201).json({message:'successfully login',user:userDetails,token:token}).send(`Login Successfully`);
                 
             }
             catch(err){
-                console.log(err);
+                // console.log(err);
                 next(new CustomError(err.message, 500, "Unable to Login"));
             }
         }
