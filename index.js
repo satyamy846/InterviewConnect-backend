@@ -24,7 +24,7 @@ app.use(feedbackRotuer);
 app.use(adminRouter);
 
 
-const port = 3000;
+const port = process.env.PORT || 5000;
 connection();
 
 app.get('/',(req,res)=>{
