@@ -10,7 +10,8 @@ const catagoryController = {
 
         }
         catch(err){
-            console.log(err.message);
+            // console.log(err);
+            next(err);
         }
     },
     async getAllcatagory(req,res){
@@ -20,7 +21,8 @@ const catagoryController = {
                 res.status(201).json({data:data});
         }
         catch(err){
-            console.log(err);
+            // console.log(err);
+            next(err);
         }
     },
     async updatecatagory(req,res){
@@ -33,7 +35,8 @@ const catagoryController = {
                 res.status(201).json({data:data});
         }
         catch(err){
-            console.log(err);
+            // console.log(err);
+            next(err);
         }
     },
     async deletecatagory(req,res){
@@ -43,7 +46,8 @@ const catagoryController = {
                 res.status(201).json({message:"record is deleted",record:record});
         }
         catch(err){
-            console.log(err);
+            // console.log(err);
+            next(err);
         }
     }
 

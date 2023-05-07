@@ -2,6 +2,7 @@ const usermodel = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const CustomError = require('../utils/errorHandler');
+
 const userController = {
     
         async signup(req,res,next){
@@ -10,7 +11,7 @@ const userController = {
                 //check if it is existing user or not
                 const existinguser = await usermodel.findOne({email:email});
                 if(existinguser){
-                    return res.status(400).json({message:'User Already Exists'}).send(`User already exists`);
+                    return next(CustomError(409,"User Already Exists"))
                 }
                 //encrypt the password
                 const hashpassword = await bcrypt.hash(password,10);
@@ -22,16 +23,13 @@ const userController = {
                 });
 
                 //generate the token 
-                const token = await jwt.sign({email:result.email,id:req._id},process.env.SECRET_KEY,{expiresIn:'1h'});
+                const token = jwt.sign({email:result.email,id:req._id},process.env.SECRET_KEY,{expiresIn:'1h'});
                 
-                res.status(200).json({user:result,token:token});
-                // console.log(result.email);
-
-                
+                res.status(200).json({user:result,token:token,message:"Signed Up Successfully"});
+                // console.log(result.email); 
             }
             catch(err){
-                next(new CustomError(err.message, 500, "Unable to Signup"));
-                console.log(err);
+                next(err);
             }
         },
         async login(req,res,next){
@@ -40,9 +38,10 @@ const userController = {
                 // console.log(password);
                 //find the existing user
                 const userDetails = await usermodel.findOne({email:email});
-                console.log(userDetails);
+                // console.log(userDetails);
                 if(!userDetails){
-                    return res.status(404).json({message:"User not found"});
+                    return next(CustomError(404, "User not found!"));
+                    
                 }
                 //compare the encrypted password with the requested password
                 const matchedpassword = await bcrypt.compare(password,userDetails.password);
@@ -51,16 +50,21 @@ const userController = {
                 
                 if(!matchedpassword){
                     // console.log("sha = " + matchedpassword)
-                    return res.status(400).json({message:`User not found please login first`}).send("User not found");
+                    return next(CustomError(404, "Invalid Credentials"));
+                    
                 }
-                    const token = jwt.sign({email:userDetails.email, id:req._id},process.env.SECRET_KEY,{expiresIn:'1h'});
+                    // console.log("id = " + userDetails._id);
+                    const token = jwt.sign({id:userDetails._id,admin:userDetails.admin},process.env.SECRET_KEY,{expiresIn:'1h'});
 
-                    res.status(201).json({message:'successfully login',user:userDetails,token:token}).send(`Login Successfully`);
+                    res.cookie("access_token", token, {
+                        httpOnly: true,
+                      })
+                      .status(200)
+                      .json({message: "Logged In", details:userDetails})
                 
             }
             catch(err){
-                // console.log(err);
-                next(new CustomError(err.message, 500, "Unable to Login"));
+                next(err);
             }
         }
 }

@@ -1,6 +1,6 @@
 const questionmodel = require('../models/Question');
 const CustomError = require('../utils/errorHandler');
-const fs = require('fs');
+// const fs = require('fs');
 const questionController = {
     async postquestion(req,res,next){
         try{
@@ -25,7 +25,8 @@ const questionController = {
             res.status(201).json({message:"Question successfully posted",data:data});
         }
         catch(err){
-            console.log(err);
+            // console.log(err);
+            next(err);
             // next(new CustomError(err.message, 500, "Unable to add Question"));
         }
     },
@@ -36,7 +37,7 @@ const questionController = {
                 res.status(201).json({data:data});
         }
         catch(err){
-            next(new CustomError(err.message, 401,"Unable to fetch questions"))
+            next(err);
         }
     },
     async updatequestion(req,res,next){
@@ -52,7 +53,7 @@ const questionController = {
                 res.status(201).json({data:data});
         }
         catch(err){
-            console.log(err);
+            next(err);
         }
     },
     async deletequestion(req,res,next){
@@ -62,8 +63,8 @@ const questionController = {
                 res.status(201).json({message:"record is deleted"});
         }
         catch(err){
-            console.log(err);
-            next(new CustomError(err.message, 500, "Unable to add Question"));
+            next(err);
+            // next(new CustomError(err.message, 500, "Unable to add Question"));
         }
     }
 
