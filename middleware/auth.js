@@ -11,9 +11,9 @@ const auth = {
                 //verifying the correct token
                 const user = jwt.verify(token,process.env.SECRET_KEY);
                 req.user = await usermodel.findById(user.id);
-                // console.log(req.user.admin);
+                // console.log(user.admin);
                 //if user is not admin
-                if(req.user.admin == false){
+                if(user.admin == false){
                     return res.status(401).json({message:"Unauthorized!"})
                 }
                 else{

@@ -23,13 +23,13 @@ const userController = {
                 });
 
                 //generate the token 
-                const token = jwt.sign({email:result.email,id:existinguser._id},process.env.SECRET_KEY);
+                const token = jwt.sign({email:result.email,id:req._id},process.env.SECRET_KEY);
                 
                 res.status(200).json({user:result,token:token,message:"Signed Up Successfully"});
                 // console.log(result.email); 
             }
             catch(err){
-                next(err);
+                console.log(err);
             }
         },
         async login(req,res,next){
