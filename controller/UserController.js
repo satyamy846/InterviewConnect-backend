@@ -60,7 +60,7 @@ const userController = {
                         httpOnly: true,
                       })
                       .status(200)
-                      .json({message: "Logged In", details:userDetails})
+                      .json({message: "Logged In", details:userDetails,token:token})
                 
             }
             catch(err){
