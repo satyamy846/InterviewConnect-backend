@@ -4,11 +4,8 @@ const feedbackController = {
     async postFeedback(req,res,next){
         try{
 
-            const result = await feedbackmodel.create({
-                comment:req.body.comment,
-                user:req.params.id,
-            });
-            res.status(201).json({feedback:result});
+            const data = await feedbackmodel.create(req.body);
+            res.status(201).json({data:data});
         }
         catch(err){
             next(err);
@@ -17,8 +14,8 @@ const feedbackController = {
     async showfeedback(req,res,next){
         try{
 
-            const result = await feedbackmodel.find({});
-            res.status(201).json({feedback:result});
+            const data = await feedbackmodel.find({});
+            res.status(201).json({data:data});
         }
         catch(err){
             next(err);

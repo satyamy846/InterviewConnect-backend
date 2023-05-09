@@ -4,7 +4,7 @@ const auth = require('../middleware/auth.js');
 const router = express.Router();
 
 //post the comment or feedback from users
-router.post('/add-comment/:id',auth.authenticate,feedbackController.postFeedback);
+router.post('/add-comment',feedbackController.postFeedback);
 // get all the feedbacks if needed.
 router.get('/getAllComments',feedbackController.showfeedback);
 
