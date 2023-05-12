@@ -9,9 +9,9 @@ const collection = new mongoose.Schema({
         type:String,
         required:[true,"Answer is required!"],
     },
-    photo:{
+    photo:[{
         type:String
-    },
+    }],
     cname:{
         type: String,
         required:[true,"Catagory name is required!"],
