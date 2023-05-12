@@ -7,7 +7,7 @@ const auth = require('../middleware/auth');
 router.post('/add-catagory',auth.authenticate,catagoryController.postcatagory);
 
 //Fetch all the catagories
-router.get('/get-catagories',auth.authenticate,catagoryController.getAllcatagory);
+router.get('/get-catagories',catagoryController.getAllcatagory);
 
 //update the catagory with their ID
 router.put('/update-catagory/:id',auth.authenticate,catagoryController.updatecatagory);

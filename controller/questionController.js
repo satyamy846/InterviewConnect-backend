@@ -26,6 +26,7 @@ const questionController = {
         }
         catch(err){
             // console.log(err);
+            console.log(err);
             next(err);
             // next(new CustomError(err.message, 500, "Unable to add Question"));
         }
